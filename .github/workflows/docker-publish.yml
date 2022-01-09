@@ -33,5 +33,11 @@ jobs:
           file: ./Dockerfile.prod
           platforms: linux/amd64
           push: true
+          secrets: |
+            "MONGO_URI=${{ secrets.GPG_KEY }}"
+            "JWT_KEY_ADMIN_ACCESS=${{ secrets.GPG_KEY }}"
+            "JWT_KEY_MESSAGE=${{ secrets.GPG_KEY }}"
+            "JWT_KEY_FRONT_ACCESS=${{ secrets.GPG_KEY }}"
+
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}

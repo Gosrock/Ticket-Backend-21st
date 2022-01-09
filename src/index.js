@@ -5,29 +5,32 @@ const cors = require("cors");
 const { TestRouter } = require("./routes");
 const { customResponse } = require("./utils/customResponse");
 const { errorHandler, errorLoger } = require("./middleware");
-
+const dotenv = require("dotenv");
+//커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
+dotenv.config();
+// 포트설정
 const PORT = 5000;
+
 const server = async () => {
   try {
-    // const {
-    //   MONGO_URI,
-    //   JWT_KEY_REGISTER,
+    const {
+      MONGO_URI,
+      JWT_KEY_ADMIN_ACCESS,
+      JWT_KEY_MESSAGE,
+      JWT_KEY_FRONT_ACCESS,
+    } = process.env;
 
-    // } = process.env;
-    // if (
-    //   !MONGO_URI ||
-    //   !JWT_KEY_ACCESS ||
-    // )
-    //   throw new Error("MONGO_URI ,JWT_KEYis not defined env!");
-    // await mongoose.connect(MONGO_URI, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    //   useCreateIndex: true,
-    //   useFindAndModify: false,
-    // });
+    // 코드베이스로 환경변수 있는지 체크
+    if (
+      !MONGO_URI ||
+      !JWT_KEY_ADMIN_ACCESS ||
+      !JWT_KEY_MESSAGE ||
+      !JWT_KEY_FRONT_ACCESS
+    )
+      throw new Error("환경변수가 제대로 설정되지 않음");
+    await mongoose.connect(MONGO_URI, {});
     // debug mode
-    //  mongoose.set('debug', true)
     app.use(cors());
     //DB 를 먼저 연결하고 나서 요청을 받아야 오류가 안남! 굿... 좋네여,..
     // console.log("MongoDB conneted");

@@ -19,7 +19,9 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
+      NODE_ENV,
     } = process.env;
+    console.log(NODE_ENV);
 
     // 코드베이스로 환경변수 있는지 체크
     if (

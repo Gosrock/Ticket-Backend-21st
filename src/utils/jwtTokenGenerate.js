@@ -27,7 +27,12 @@ const refreshTokenGenerate = (user) => {
     },
     process.env.JWT_KEY_REFRESH
   );
+
+  console.log(userRefreshJwt
+    
+    )
   return userRefreshJwt;
+
 };
 
 module.exports = { accessTokenGenerate, refreshTokenGenerate };

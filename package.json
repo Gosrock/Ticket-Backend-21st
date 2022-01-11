@@ -11,7 +11,15 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.7",
+    "prettier": "2.5.1"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,tsx}": [
+      "prettier --write"
+    ]
   },
   "name": "ticket-backend",
   "version": "1.0.0",
@@ -19,7 +27,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "author": "",
   "license": "ISC",

@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const mongoose = require("mongoose");
-const cors = require("cors");
-const { TestRouter } = require("./routes");
-const { customResponse } = require("./utils/customResponse");
-const { errorHandler, errorLoger } = require("./middleware");
-const dotenv = require("dotenv");
+const mongoose = require('mongoose');
+const cors = require('cors');
+const { TestRouter } = require('./routes');
+const { customResponse } = require('./utils/customResponse');
+const { errorHandler, errorLoger } = require('./middleware');
+const dotenv = require('dotenv');
 //커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
 dotenv.config();
@@ -19,7 +19,7 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
-      NODE_ENV,
+      NODE_ENV
     } = process.env;
     console.log(NODE_ENV);
 
@@ -30,7 +30,7 @@ const server = async () => {
       !JWT_KEY_MESSAGE ||
       !JWT_KEY_FRONT_ACCESS
     )
-      throw new Error("환경변수가 제대로 설정되지 않음");
+      throw new Error('환경변수가 제대로 설정되지 않음');
     await mongoose.connect(MONGO_URI, {});
     // debug mode
     app.use(cors());
@@ -45,7 +45,7 @@ const server = async () => {
     app.use(errorLoger);
     app.use(errorHandler);
     app.listen(PORT, async () => {
-      console.log("server on.");
+      console.log('server on.');
     });
   } catch (err) {
     console.log(err);

@@ -12,6 +12,8 @@ const TicketSchema = new Schema(
     // 전화번호
     phoneNumber: { type: String },
 
+    ticketNumber: { type: Number },
+
     // 어드민 (공짜티켓관련)
     adminTicket: { type: Boolean, default: false },
 

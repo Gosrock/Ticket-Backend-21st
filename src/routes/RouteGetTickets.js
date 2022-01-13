@@ -21,7 +21,6 @@ RouteGetTickets.get(
     try {
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
       const { phoneNumber } = req.query;
-      console.log(phoneNumber);
 
       // 티켓 전체 수량 세기
       const myTickets = await Ticket.find({

@@ -33,4 +33,23 @@ const refreshTokenGenerate = user => {
   return userRefreshJwt;
 };
 
-module.exports = { accessTokenGenerate, refreshTokenGenerate };
+const adminAccessTokenGenerate = ({ userId, name, _id }) => {
+  const adminUserAccessJwt = jwt.sign(
+    {
+      _id: _id,
+      name: name,
+      userId: userId
+    },
+    process.env.JWT_KEY_ADMIN_ACCESS,
+    {
+      expiresIn: '1h'
+    }
+  );
+  return adminUserAccessJwt;
+};
+
+module.exports = {
+  accessTokenGenerate,
+  refreshTokenGenerate,
+  adminAccessTokenGenerate
+};

@@ -4,6 +4,7 @@ const TestRouter = express.Router();
 const { validationCatch } = require('../middleware/validationCatch');
 const { query, body } = require('express-validator');
 const { ServerCommonError, CustomError } = require('../errors');
+const { AdminAuthentication } = require('../middleware');
 
 TestRouter.post(
   '/api/test',
@@ -27,7 +28,7 @@ TestRouter.post(
 
 TestRouter.get(
   '/api/test',
-
+  AdminAuthentication,
   // 미들 웨어 달아서 인증 먼저
   [
     // query("phonenumber")
@@ -37,8 +38,8 @@ TestRouter.get(
   validationCatch,
   async (req, res, next) => {
     try {
-      // const { decodedAccessToken } = req.body;
-      console.log('phone');
+      const { adminUser } = req.body;
+      console.log(adminUser);
       return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {

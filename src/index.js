@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { TestRouter } = require('./routes');
+const { TestRouter, RoutePostTickets, RouteGetTickets } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
 const dotenv = require('dotenv');
@@ -41,6 +41,8 @@ const server = async () => {
     app.use(express.json());
 
     app.use(TestRouter);
+    app.use(RoutePostTickets);
+    app.use(RouteGetTickets);
 
     app.use(errorLoger);
     app.use(errorHandler);

@@ -1,3 +1,5 @@
 module.exports = {
-  ...require("./RouteTest"),
+  ...require('./RouteTest'),
+  ...require('./RoutePostTickets'),
+  ...require('./RouteGetTickets')
 };

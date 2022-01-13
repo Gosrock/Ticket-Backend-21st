@@ -10,7 +10,7 @@ const accessTokenGenerate = user => {
       profile_url: user.profile_url,
       status: user.status
     },
-    process.env.JWT_KEY_ACCESS,
+    process.env.JWT_KEY_MESSAGE,
     {
       expiresIn: '24h'
     }

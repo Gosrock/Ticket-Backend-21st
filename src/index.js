@@ -12,6 +12,7 @@ const {
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
 const dotenv = require('dotenv');
+const { RouteTicketListUp } = require('./routes/RouteTicketListUp');
 //커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
 dotenv.config();
@@ -51,6 +52,7 @@ const server = async () => {
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);
     app.use(RouteAdminRegister);
+    app.use(RouteTicketListUp);
 
     app.use(errorLoger);
     app.use(errorHandler);

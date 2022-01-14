@@ -1,3 +1,7 @@
 module.exports = {
-  ...require("./RouteTest"),
+  ...require('./RouteTest'),
+  ...require('./RoutePostTickets'),
+  ...require('./RouteGetTickets'),
+  ...require('./RouteAdminRegister'),
+  ...require('./RouteAdminlogin')
 };

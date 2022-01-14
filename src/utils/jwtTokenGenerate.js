@@ -10,7 +10,7 @@ const accessTokenGenerate = user => {
       profile_url: user.profile_url,
       status: user.status
     },
-    process.env.JWT_KEY_ACCESS,
+    process.env.JWT_KEY_MESSAGE,
     {
       expiresIn: '24h'
     }
@@ -33,4 +33,23 @@ const refreshTokenGenerate = user => {
   return userRefreshJwt;
 };
 
-module.exports = { accessTokenGenerate, refreshTokenGenerate };
+const adminAccessTokenGenerate = ({ userId, name, _id }) => {
+  const adminUserAccessJwt = jwt.sign(
+    {
+      _id: _id,
+      name: name,
+      userId: userId
+    },
+    process.env.JWT_KEY_ADMIN_ACCESS,
+    {
+      expiresIn: '1h'
+    }
+  );
+  return adminUserAccessJwt;
+};
+
+module.exports = {
+  accessTokenGenerate,
+  refreshTokenGenerate,
+  adminAccessTokenGenerate
+};

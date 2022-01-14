@@ -1,19 +1,22 @@
-const express = require("express");
+const express = require('express');
 // const axios = require("axios");
 const TestRouter = express.Router();
-const { validationCatch } = require("../middleware/validationCatch");
-const { query, body } = require("express-validator");
-const { ServerCommonError, CustomError, NaverSMSError } = require("../errors");
+const { validationCatch } = require('../middleware/validationCatch');
+const { query, body } = require('express-validator');
+const { ServerCommonError, CustomError } = require('../errors');
+const { AdminAuthentication } = require('../middleware');
 
 TestRouter.post(
-  "/api/test",
-  [body("phonenumber").isString().withMessage("전화번호가 필요합니다.")],
+  '/api/test',
+  [body('name').isString().withMessage('name 필요합니다.')],
   validationCatch,
   async (req, res, next) => {
     try {
       const { phonenumber } = req.body;
-      console.log("phone", phonenumber);
-      return res.json({ success: true, data: { user: "찬진" } });
+      console.log('phone', phonenumber);
+
+      return res.custom200SuccessData({ user: '찬진' });
+      // return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);
@@ -24,7 +27,9 @@ TestRouter.post(
 );
 
 TestRouter.get(
-  "/api/test",
+  '/api/test',
+  AdminAuthentication,
+  // 미들 웨어 달아서 인증 먼저
   [
     // query("phonenumber")
     //   .isEmpty()
@@ -33,8 +38,9 @@ TestRouter.get(
   validationCatch,
   async (req, res, next) => {
     try {
-      console.log("phone");
-      return res.json({ success: true, data: { user: "찬진" } });
+      const { adminUser } = req.body;
+      console.log(adminUser);
+      return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);

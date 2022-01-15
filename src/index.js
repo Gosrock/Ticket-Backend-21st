@@ -7,12 +7,12 @@ const {
   RoutePostTickets,
   RouteGetTickets,
   RouteAdminlogin,
-  RouteAdminRegister
+  RouteAdminRegister,
+  RouteTicketListUp
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
 const dotenv = require('dotenv');
-const { RouteTicketListUp } = require('./routes/RouteTicketListUp');
 //커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
 dotenv.config();

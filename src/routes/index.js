@@ -3,5 +3,6 @@ module.exports = {
   ...require('./RoutePostTickets'),
   ...require('./RouteGetTickets'),
   ...require('./RouteAdminRegister'),
-  ...require('./RouteAdminlogin')
+  ...require('./RouteAdminlogin'),
+  ...require('./RouteTicketListUp')
 };

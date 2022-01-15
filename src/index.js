@@ -7,10 +7,11 @@ const {
   RoutePostTickets,
   RouteGetTickets,
   RouteAdminlogin,
-  RouteAdminRegister
+  RouteAdminRegister,
+  RouteSendMessage
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
-const { errorHandler, errorLoger } = require('./middleware');
+const { errorHandler, errorLoger, naverMessage } = require('./middleware');
 const dotenv = require('dotenv');
 //커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
@@ -25,8 +26,8 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
-      NAVER_KEY_ACCESS,
-      NAVER_KEY_SECRET,
+      NAVER_SERVICE_ID,
+      NAVER_SECRET_KEY,
       NODE_ENV
     } = process.env;
     console.log(NODE_ENV);
@@ -37,8 +38,8 @@ const server = async () => {
       !JWT_KEY_ADMIN_ACCESS ||
       !JWT_KEY_MESSAGE ||
       !JWT_KEY_FRONT_ACCESS ||
-      !NAVER_KEY_ACCESS ||
-      !NAVER_KEY_SECRET
+      !NAVER_SERVICE_ID ||
+      !NAVER_SECRET_KEY
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
 
@@ -56,11 +57,13 @@ const server = async () => {
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);
     app.use(RouteAdminRegister);
-
-    app.use('/auth', authRouter);
+    app.use(RouteSendMessage);
 
     app.use(errorLoger);
     app.use(errorHandler);
+
+    app.use(naverMessage);
+
     app.listen(PORT, async () => {
       console.log('server on.');
     });

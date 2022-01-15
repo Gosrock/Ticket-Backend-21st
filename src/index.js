@@ -25,6 +25,8 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
+      NAVER_KEY_ACCESS,
+      NAVER_KEY_SECRET,
       NODE_ENV
     } = process.env;
     console.log(NODE_ENV);
@@ -34,9 +36,12 @@ const server = async () => {
       !MONGO_URI ||
       !JWT_KEY_ADMIN_ACCESS ||
       !JWT_KEY_MESSAGE ||
-      !JWT_KEY_FRONT_ACCESS
+      !JWT_KEY_FRONT_ACCESS ||
+      !NAVER_KEY_ACCESS ||
+      !NAVER_KEY_SECRET
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
+
     await mongoose.connect(MONGO_URI, {});
     // debug mode
     app.use(cors());
@@ -51,6 +56,8 @@ const server = async () => {
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);
     app.use(RouteAdminRegister);
+
+    app.use('/auth', authRouter);
 
     app.use(errorLoger);
     app.use(errorHandler);

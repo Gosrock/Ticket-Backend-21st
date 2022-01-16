@@ -20,6 +20,8 @@
 
 ![Group 4](https://user-images.githubusercontent.com/13329304/149653565-3d5db97f-063f-49ac-85d7-32b3dd827477.png)
 
+## [백엔드 api 명세서](https://github.com/Gosrock/Ticket-Backend/wiki)
+
 ### 커밋 이모지
 
 - :rocket: `:rocket:` : 기능 추가
@@ -27,3 +29,49 @@
 - :books: `:books:` : 문서 작업
 - :hammer: `:hammer:` : 리팩토링 ㅎㅎ
 - :hankey: `:hankey:` : 악취가나는 코드 ( 리팩토링 필요 )
+
+## 참여자
+
+<table>
+    <tr align="center">
+        <td><B>기획 , 총괄, 백엔드,어드민 팀장<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>백엔드<B></td>
+    </tr>
+    <tr align="center">
+        <td><B>이찬진<B></td>
+        <td><B>김민준<B></td>
+        <td><B>노경민<B></td>
+        <td><B>박준서<B></td>
+        <td><B>채승희<B></td>
+    </tr>
+    <tr align="center">
+        <td>
+            <img src="https://github.com/ImNM.png?size=100">
+            <br>
+            <a href="https://github.com/ImNM"><I>HARlBO</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/sanbonai06.png?size=100">
+            <br>
+            <a href="https://github.com/sanbonai06"><I>wody27</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/gengminy.png?size=100">
+            <br>
+            <a href="https://github.com/gengminy"><I>JeongMinHo</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/def30.png?size=100">
+            <br>
+            <a href="https://github.com/def30"><I>JeongMinHo</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/chaeshee0908.png?size=100">
+            <br>
+            <a href="https://github.com/chaeshee0908"><I>JeongMinHo</I></a>
+        </td>
+    </tr>
+</table>

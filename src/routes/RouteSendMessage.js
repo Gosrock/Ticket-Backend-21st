@@ -1,7 +1,11 @@
 const express = require('express');
 // const axios = require("axios");
 const RouteSendMessage = express.Router();
-const { naverMessage } = require('../middleware/naverMessage');
+//const { naverMessage } = require('../middleware/naverMessage');
+const {
+  authenticationMessageTokenGenerate
+} = require('../utils/jwtTokenGenerate');
+const { decodeToekn } = require('../utils/decodeToken');
 const { validationCatch } = require('../middleware/validationCatch');
 const { query, body } = require('express-validator');
 const { ServerCommonError, CustomError, NaverSMSError } = require('../errors');
@@ -9,41 +13,56 @@ const { ServerCommonError, CustomError, NaverSMSError } = require('../errors');
 RouteSendMessage.get(
   '/auth/message',
   /*
-  [body("receiver").isString().withMessage("전화번호가 필요합니다.")],
+  [body("phoneNumber").isString().withMessage("전화번호가 필요합니다.")],
   validationCatch,
   */
   async (req, res, next) => {
     try {
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
-      //const { receiver, caller, certification } = req.body;
+      //const { phoneNumber, authentication } = req.body;
       /*
-        var caller = "01028883492";
-        var receiver = "01028883492";
-        var certification = "1357";
-
+        const caller = process.env.NAVER_CALLER;
         const code = naverMessage(
           caller,
-          receiver,
-          `이것은 고스락 테스트입니다 인증번호 ${certification}를 입력하세요`
+          phoneNumber,
+          `이것은 고스락 테스트입니다 인증번호 ${authentication}를 입력하세요`
         );
       */
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
 
-      //임시변수
-      var caller = '01028883492';
-      var receiver = '01028883492';
-      var certification = '1357';
-      //임시변수
+      // 환경변수(발신자 번호 확인)
+      const caller = process.env.NAVER_CALLER;
+      console.log(caller);
+      if (!caller) throw new Error('서버에서 발신번호를 지정하지 않았습니다');
 
-      console.log('complete');
+      //임시변수
+      var phoneNumber = '01028883492';
+      var authenticationNumber = '1357';
+
+      //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
+      //const { phoneNumber, authentication } = req.body;
+      /*
+        const caller = process.env.NAVER_CALLER;
+        const code = naverMessage(
+          caller,
+          phoneNumber,
+          `이것은 고스락 테스트입니다 인증번호 ${authentication}를 입력하세요`
+        );
+      */
+      //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
+
+      const messageToken = authenticationMessageTokenGenerate({
+        phoneNumber,
+        authenticationNumber
+      });
+      console.log('Authentication Message has successfully sended');
+      console.log(`TOKEN=${messageToken}`);
       return res.json({
         success: true,
         status: 200,
         data: {
-          user: '경민', //유저이름
-          receiver: receiver, //수신번호
-          certification: certification //인증번호
-        } //엑세스 토큰으로 묶어 보내야함
+          messageToken: messageToken
+        }
       });
     } catch (err) {
       if (err instanceof CustomError) {
@@ -54,17 +73,35 @@ RouteSendMessage.get(
   }
 );
 
-RouteSendMessage.get('/auth/validation', async (req, res, next) => {
-  try {
-    //decode and compare
-    console.log('phone');
-    return res.send('text');
-  } catch (err) {
-    if (err instanceof CustomError) {
-      return next(err);
+RouteSendMessage.get(
+  '/auth/validation',
+  /*
+  [body("phoneNumber").isString().withMessage("전화번호가 필요합니다.")],
+  validationCatch,
+  */
+  async (req, res, next) => {
+    try {
+      const { messageToken } = req.body;
+      if (!messageToken)
+        throw new Error('메세지 인증 토큰이 존재하지 않습니다');
+
+      //decode and compare
+      try {
+        const decodedToken = await decodeToken(
+          messageToken,
+          process.env.JWT_KEY_ADMIN_ACCESSW
+        );
+      } catch (err) {}
+
+      console.log('phone');
+      return res.send('text');
+    } catch (err) {
+      if (err instanceof CustomError) {
+        return next(err);
+      }
+      return next(new ServerCommonError(err));
     }
-    return next(new ServerCommonError(err));
   }
-});
+);
 
 module.exports = { RouteSendMessage };

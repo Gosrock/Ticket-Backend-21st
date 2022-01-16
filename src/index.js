@@ -28,6 +28,7 @@ const server = async () => {
       JWT_KEY_FRONT_ACCESS,
       NAVER_SERVICE_ID,
       NAVER_SECRET_KEY,
+      NAVER_CALLER,
       NODE_ENV
     } = process.env;
     console.log(NODE_ENV);
@@ -39,7 +40,8 @@ const server = async () => {
       !JWT_KEY_MESSAGE ||
       !JWT_KEY_FRONT_ACCESS ||
       !NAVER_SERVICE_ID ||
-      !NAVER_SECRET_KEY
+      !NAVER_SECRET_KEY ||
+      !NAVER_CALLER
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
 

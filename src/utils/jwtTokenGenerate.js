@@ -48,8 +48,26 @@ const adminAccessTokenGenerate = ({ userId, name, _id }) => {
   return adminUserAccessJwt;
 };
 
+const authenticationMessageTokenGenerate = ({
+  phoneNumber1,
+  authenticationNumber1
+}) => {
+  const authenticationMessageJwt = jwt.sign(
+    {
+      phoneNumber: phoneNumber1,
+      authenticationNumber: authenticationNumber1
+    },
+    process.env.JWT_KEY_ADMIN_ACCESS,
+    {
+      expiresIn: '3m'
+    }
+  );
+  return authenticationMessageJwt;
+};
+
 module.exports = {
   accessTokenGenerate,
   refreshTokenGenerate,
-  adminAccessTokenGenerate
+  adminAccessTokenGenerate,
+  authenticationMessageTokenGenerate
 };

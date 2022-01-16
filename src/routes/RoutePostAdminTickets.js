@@ -57,7 +57,6 @@ RoutePostAdminTickets.post(
       );
 
       return res.custom200SuccessData(listOfTickets);
-      // return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);

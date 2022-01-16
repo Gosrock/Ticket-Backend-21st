@@ -6,7 +6,7 @@ const TicketSchema = new Schema(
     status: {
       type: String,
       default: 'pending-deposit',
-      enum: ['confrim-deposit', 'pending-deposit', 'enter', 'non-deposit']
+      enum: ['confirm-deposit', 'pending-deposit', 'enter', 'non-deposit']
     },
 
     // 전화번호

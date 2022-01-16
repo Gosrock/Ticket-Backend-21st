@@ -51,27 +51,27 @@
         <td>
             <img src="https://github.com/ImNM.png?size=100">
             <br>
-            <a href="https://github.com/ImNM"><I>HARlBO</I></a>
+            <a href="https://github.com/ImNM"><I>ImNM</I></a>
         </td>
         <td>
             <img src="https://github.com/sanbonai06.png?size=100">
             <br>
-            <a href="https://github.com/sanbonai06"><I>wody27</I></a>
+            <a href="https://github.com/sanbonai06"><I>sanbonai06</I></a>
         </td>
         <td>
             <img src="https://github.com/gengminy.png?size=100">
             <br>
-            <a href="https://github.com/gengminy"><I>JeongMinHo</I></a>
+            <a href="https://github.com/gengminy"><I>gengminy</I></a>
         </td>
         <td>
             <img src="https://github.com/def30.png?size=100">
             <br>
-            <a href="https://github.com/def30"><I>JeongMinHo</I></a>
+            <a href="https://github.com/def30"><I>def30</I></a>
         </td>
         <td>
             <img src="https://github.com/chaeshee0908.png?size=100">
             <br>
-            <a href="https://github.com/chaeshee0908"><I>JeongMinHo</I></a>
+            <a href="https://github.com/chaeshee0908"><I>chaeshee0908</I></a>
         </td>
     </tr>
 </table>

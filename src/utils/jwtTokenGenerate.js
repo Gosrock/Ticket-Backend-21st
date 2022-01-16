@@ -49,13 +49,13 @@ const adminAccessTokenGenerate = ({ userId, name, _id }) => {
 };
 
 const authenticationMessageTokenGenerate = ({
-  phoneNumber1,
-  authenticationNumber1
+  phoneNumber,
+  authenticationNumber
 }) => {
   const authenticationMessageJwt = jwt.sign(
     {
-      phoneNumber: phoneNumber1,
-      authenticationNumber: authenticationNumber1
+      phoneNumber: phoneNumber,
+      authenticationNumber: authenticationNumber
     },
     process.env.JWT_KEY_ADMIN_ACCESS,
     {

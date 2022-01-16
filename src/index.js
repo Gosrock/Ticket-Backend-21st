@@ -64,8 +64,6 @@ const server = async () => {
     app.use(errorLoger);
     app.use(errorHandler);
 
-    app.use(naverMessage);
-
     app.listen(PORT, async () => {
       console.log('server on.');
     });

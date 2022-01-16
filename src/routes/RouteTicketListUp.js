@@ -42,7 +42,7 @@ RouteTicketListUp.get(
           Ticket.countDocuments(),
           Ticket.find().limit(limit).skip(offset).sort({ ticketNumber: 1 })
         ]);
-        if (totalCount / offset < countPage) {
+        if (Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
         resultObject = {
@@ -62,7 +62,7 @@ RouteTicketListUp.get(
             .skip(offset)
             .sort({ ticketNumber: 1 })
         ]);
-        if (totalCount / offset < countPage) {
+        if (Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
         resultObject = {
@@ -82,7 +82,7 @@ RouteTicketListUp.get(
             .skip(offset)
             .sort({ ticketNumber: 1 })
         ]);
-        if (totalCount / offset < countPage) {
+        if (Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
         resultObject = {

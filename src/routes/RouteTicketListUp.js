@@ -34,7 +34,7 @@ RouteTicketListUp.get(
       if (offset < 0) {
         return res.custom400FailMessage('페이지를 넘버 오류');
       }
-      const resultArr = [];
+      const resultObject = {};
       console.log(`${countPage}번 페이지`);
 
       if (!searchType.length) {
@@ -45,11 +45,10 @@ RouteTicketListUp.get(
         if (totalCount / offset < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
-        resultArr.push({
-          totalResultCount: totalCount,
-          ticketList: ticketList,
-          nextPageNum: countPage >= totalCount / limit ? null : countPage + 1
-        });
+        resultObject.totakCountPage = totalCount;
+        resultObject.ticketList = ticketList;
+        resultObject.nextPageNum =
+          totalCount / limit >= countPage ? null : countPage + 1;
       } else if (searchType === 'accountName') {
         const [totalCount, ticketList] = await Promise.all([
           Ticket.countDocuments({
@@ -65,11 +64,10 @@ RouteTicketListUp.get(
         if (totalCount / offset < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
-        resultArr.push({
-          totalResultCount: totalCount,
-          ticketList: ticketList,
-          nextPageNum: countPage >= totalCount / limit ? null : countPage + 1
-        });
+        resultObject.totakCountPage = totalCount;
+        resultObject.ticketList = ticketList;
+        resultObject.nextPageNum =
+          totalCount / limit >= countPage ? null : countPage + 1;
       } else if (searchType === 'phoneNumber') {
         const [totalCount, ticketList] = await Promise.all([
           Ticket.countDocuments({
@@ -85,13 +83,12 @@ RouteTicketListUp.get(
         if (totalCount / offset < countPage) {
           return res.custom400FailMessage('페이지 넘버 오류');
         }
-        resultArr.push({
-          totalResultCount: totalCount,
-          ticketList: ticketList,
-          nextPageNum: countPage >= totalCount / limit ? null : countPage + 1
-        });
+        resultObject.totakCountPage = totalCount;
+        resultObject.ticketList = ticketList;
+        resultObject.nextPageNum =
+          totalCount / limit >= countPage ? null : countPage + 1;
       }
-      return res.custom200SuccessData(resultArr);
+      return res.custom200SuccessData(resultObject);
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);

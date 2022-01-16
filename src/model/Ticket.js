@@ -6,7 +6,7 @@ const TicketSchema = new Schema(
     status: {
       type: String,
       default: 'pending-deposit',
-      enum: ['confrim-deposit', 'pending-deposit', 'enter', 'non-deposit']
+      enum: ['confirm-deposit', 'pending-deposit', 'enter', 'non-deposit']
     },
 
     // 전화번호
@@ -16,6 +16,8 @@ const TicketSchema = new Schema(
 
     // 어드민 (공짜티켓관련)
     adminTicket: { type: Boolean, default: false },
+
+    accountName: { type: String },
 
     // 마지막으로 관리한 사람이 누군지.  populate 활용하세요.
     manager: { type: Schema.Types.ObjectId, ref: 'admin' }

@@ -1,15 +1,19 @@
 const express = require('express');
 // const axios = require("axios");
 const RouteSendMessage = express.Router();
-const { naverMessage } = require('../middleware/naverMessage');
+const { naverMessage } = require('../utils/naverMessage');
 const {
-  authenticationMessageTokenGenerate
+  authenticationMessageTokenGenerate,
+  accessTokenGenerate
 } = require('../utils/jwtTokenGenerate');
 const { decodeToken } = require('../utils/decodeToken');
 const { validationCatch } = require('../middleware/validationCatch');
 const { query, body } = require('express-validator');
-const { ServerCommonError, CustomError, NaverSMSError } = require('../errors');
-const { hash } = require('bcryptjs');
+const {
+  AuthenticationError,
+  ServerCommonError,
+  CustomError
+} = require('../errors');
 
 const randomNumberGenerate = count => {
   let result = '';
@@ -96,10 +100,10 @@ RouteSendMessage.post(
 
       const decodedToken = await decodeToken(
         messageToken,
-        process.env.JWT_KEY_ADMIN_ACCESS
+        process.env.JWT_KEY_MESSAGE
       )
         .catch(err => {
-          throw err;
+          throw new AuthenticationError(err, err);
         })
         .then(res => {
           return res;
@@ -108,13 +112,21 @@ RouteSendMessage.post(
       console.log(decodedToken); //임시
 
       if (decodedToken.authenticationNumber === authenticationNumber) {
+        //인증성공
+        const userAccessToken = accessTokenGenerate(
+          { phoneNumber: decodedToken.phoneNumber },
+          process.env.JWT_KEY_FRONT_ACCESS
+        );
         return res.json({
           success: true,
           status: 200,
           data: {
-            authenticated: true
+            userAccessToken: userAccessToken
           }
         });
+      } else {
+        //인증실패
+        throw new AuthenticationError('인증번호 불일치', '인증번호 불일치');
       }
     } catch (err) {
       if (err instanceof CustomError) {

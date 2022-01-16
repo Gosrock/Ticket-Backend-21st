@@ -63,6 +63,9 @@ const server = async () => {
     app.use(RouteSendMessage);
     app.use(RouteTicketListUp);
 
+    app.use(errorLoger);
+    app.use(errorHandler);
+
     app.listen(PORT, async () => {
       console.log('server on.');
     });
@@ -70,3 +73,4 @@ const server = async () => {
     console.log(err);
   }
 };
+server();

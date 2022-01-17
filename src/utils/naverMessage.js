@@ -12,9 +12,7 @@ code.google.com/p/crypto-js/wiki/License
 const CryptoJS = require('crypto-js');
 const axios = require('axios');
 
-const naverMessage = (caller, receiver, content) => {
-  var resultCode = 404;
-
+async function naverMessage(caller, receiver, content) {
   //서명
   const date = Date.now().toString();
   const uri = process.env.NAVER_SERVICE_ID; //서비스 ID
@@ -37,15 +35,15 @@ const naverMessage = (caller, receiver, content) => {
   const signature = hash.toString(CryptoJS.enc.Base64);
 
   //문자 송신 요청
-  axios({
+  const resultCode = await axios({
     method: method,
     json: true,
     url: url,
     headers: {
-      'Content-type': 'application/json; charset=utf-8',
-      'x-ncp-apigw-timestamp': date,
-      'x-ncp-iam-access-key': accessKey,
-      'x-ncp-apigw-signature-v2': signature
+      'Content-type': 'application/json; charset=utf-8', //400
+      'x-ncp-apigw-timestamp': date, //401
+      'x-ncp-iam-access-key': accessKey, //401
+      'x-ncp-apigw-signature-v2': signature //401
     },
     data: {
       type: 'SMS',
@@ -56,13 +54,16 @@ const naverMessage = (caller, receiver, content) => {
     }
   })
     .then(res => {
-      resultCode = 202;
-      return res;
+      return 202;
     })
     .catch(err => {
-      console.log(err);
+      if (err.response) {
+        return err.response.status;
+      } else {
+        return 400;
+      }
     });
   return resultCode;
-};
+}
 
 module.exports = { naverMessage };

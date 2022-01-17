@@ -3,5 +3,6 @@ module.exports = {
   ...require('./ServerCommonError'),
   ...require('./AuthenticationError'),
   ...require('./ValidationError'),
-  ...require('./ErrorMessage')
+  ...require('./ErrorMessage'),
+  ...require('./NaverError')
 };

@@ -36,30 +36,28 @@ async function naverMessage(caller, receiver, content) {
   const signature = hash.toString(CryptoJS.enc.Base64);
 
   //문자 송신 요청
-  await axios({
-    method: method,
-    json: true,
-    url: url,
-    headers: {
-      'Content-type': 'application/json; charset=utf-8', //400
-      'x-ncp-apigw-timestamp': date, //401
-      'x-ncp-iam-access-key': accessKey, //401
-      'x-ncp-apigw-signature-v2': signature //401
-    },
-    data: {
-      type: 'SMS',
-      countryCode: '82',
-      from: caller, //"발신번호기입",
-      content: content, //문자내용 기입,
-      messages: [{ to: `${receiver}` }]
-    }
-  }).catch(err => {
-    if (err.response) {
-      throw new NaverError(null, err.response.status);
-    } else {
-      throw new NaverError(null, 400);
-    }
-  });
+  try {
+    await axios({
+      method: method,
+      json: true,
+      url: url,
+      headers: {
+        'Content-type': 'application/json; charset=utf-8', //400
+        'x-ncp-apigw-timestamp': date, //401
+        'x-ncp-iam-access-key': accessKey, //401
+        'x-ncp-apigw-signature-v2': signature //401
+      },
+      data: {
+        type: 'SMS',
+        countryCode: '82',
+        from: caller, //"발신번호기입",
+        content: content, //문자내용 기입,
+        messages: [{ to: `${receiver}` }]
+      }
+    });
+  } catch (err) {
+    throw new NaverError(err, err.response.status);
+  }
 }
 
 module.exports = { naverMessage };

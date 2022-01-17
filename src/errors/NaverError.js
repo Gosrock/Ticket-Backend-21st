@@ -5,7 +5,7 @@ const ErrorMessage = require('./ErrorMessage');
 class NaverError extends CustomError {
   constructor(message, status) {
     super(message);
-    this.statusCode = status;
+    this.statusCode = 400;
     switch (status) {
       case 401:
         this.clientMessage = ErrorMessage.NAVER_UNAUTHORIZED;

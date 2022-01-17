@@ -48,16 +48,14 @@ RouteSendMessage.post(
       console.log(authenticationNumber); //임시
 
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
+
       /*
-        const code = await naverMessage(
+        await naverMessage(
           caller,
           phoneNumber,
           `[GOSROCK] 이것은 테스트입니다 인증번호 [${authenticationNumber}]를 입력하세요`
         );
-        console.log(`naverSMS : code is - ${code}`)
-        if(1){
-          throw new NaverError(code, code);
-        }*/
+      */
 
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
 

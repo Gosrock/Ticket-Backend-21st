@@ -9,6 +9,7 @@ code.google.com/p/crypto-js
 (c) 2009-2013 by Jeff Mott. All rights reserved.
 code.google.com/p/crypto-js/wiki/License
 */
+const { NaverError } = require('../errors');
 const CryptoJS = require('crypto-js');
 const axios = require('axios');
 
@@ -35,7 +36,7 @@ async function naverMessage(caller, receiver, content) {
   const signature = hash.toString(CryptoJS.enc.Base64);
 
   //문자 송신 요청
-  const resultCode = await axios({
+  await axios({
     method: method,
     json: true,
     url: url,
@@ -52,18 +53,13 @@ async function naverMessage(caller, receiver, content) {
       content: content, //문자내용 기입,
       messages: [{ to: `${receiver}` }]
     }
-  })
-    .then(res => {
-      return 202;
-    })
-    .catch(err => {
-      if (err.response) {
-        return err.response.status;
-      } else {
-        return 400;
-      }
-    });
-  return resultCode;
+  }).catch(err => {
+    if (err.response) {
+      throw new NaverError(null, err.response.status);
+    } else {
+      throw new NaverError(null, 400);
+    }
+  });
 }
 
 module.exports = { naverMessage };

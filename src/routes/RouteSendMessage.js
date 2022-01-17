@@ -11,6 +11,7 @@ const { validationCatch } = require('../middleware/validationCatch');
 const { query, body } = require('express-validator');
 const {
   AuthenticationError,
+  NaverError,
   ServerCommonError,
   CustomError
 } = require('../errors');
@@ -29,6 +30,8 @@ RouteSendMessage.post(
     body('phoneNumber')
       .isString()
       .withMessage('전화번호가 필요합니다.')
+      .matches(/^[0-9]+$/)
+      .withMessage('숫자만 들어와야합니다.')
       .isLength({ min: 11, max: 11 })
       .withMessage('전화번호 길이는 11자이어야 합니다.')
   ],
@@ -45,13 +48,15 @@ RouteSendMessage.post(
       console.log(authenticationNumber); //임시
 
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
+
       /*
-        const code = naverMessage(
+        await naverMessage(
           caller,
           phoneNumber,
-          `이것은 고스락 테스트입니다 인증번호 [${authenticationNumber}]를 입력하세요`
+          `[GOSROCK] 이것은 테스트입니다 인증번호 [${authenticationNumber}]를 입력하세요`
         );
       */
+
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
 
       const messageToken = authenticationMessageTokenGenerate({

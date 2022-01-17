@@ -9,12 +9,11 @@ code.google.com/p/crypto-js
 (c) 2009-2013 by Jeff Mott. All rights reserved.
 code.google.com/p/crypto-js/wiki/License
 */
+const { NaverError } = require('../errors');
 const CryptoJS = require('crypto-js');
 const axios = require('axios');
 
-const naverMessage = (caller, receiver, content) => {
-  var resultCode = 404;
-
+async function naverMessage(caller, receiver, content) {
   //서명
   const date = Date.now().toString();
   const uri = process.env.NAVER_SERVICE_ID; //서비스 ID
@@ -37,32 +36,28 @@ const naverMessage = (caller, receiver, content) => {
   const signature = hash.toString(CryptoJS.enc.Base64);
 
   //문자 송신 요청
-  axios({
-    method: method,
-    json: true,
-    url: url,
-    headers: {
-      'Content-type': 'application/json; charset=utf-8',
-      'x-ncp-apigw-timestamp': date,
-      'x-ncp-iam-access-key': accessKey,
-      'x-ncp-apigw-signature-v2': signature
-    },
-    data: {
-      type: 'SMS',
-      countryCode: '82',
-      from: caller, //"발신번호기입",
-      content: content, //문자내용 기입,
-      messages: [{ to: `${receiver}` }]
-    }
-  })
-    .then(res => {
-      resultCode = 202;
-      return res;
-    })
-    .catch(err => {
-      console.log(err);
+  try {
+    await axios({
+      method: method,
+      json: true,
+      url: url,
+      headers: {
+        'Content-type': 'application/json; charset=utf-8', //400
+        'x-ncp-apigw-timestamp': date, //401
+        'x-ncp-iam-access-key': accessKey, //401
+        'x-ncp-apigw-signature-v2': signature //401
+      },
+      data: {
+        type: 'SMS',
+        countryCode: '82',
+        from: caller, //"발신번호기입",
+        content: content, //문자내용 기입,
+        messages: [{ to: `${receiver}` }]
+      }
     });
-  return resultCode;
-};
+  } catch (err) {
+    throw new NaverError(err, err.response.status);
+  }
+}
 
 module.exports = { naverMessage };

@@ -11,6 +11,8 @@ RoutePostAdminTickets.post(
   AdminAuthentication,
   [
     body('ticketCount')
+      .exists()
+      .withMessage('티켓 개수를 입력해주세요')
       .isInt()
       .withMessage('ticketCount 0이상 10이하의 정수로 필요합니다.')
   ],

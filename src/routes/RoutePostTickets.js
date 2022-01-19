@@ -1,18 +1,18 @@
 const express = require('express');
 // const axios = require("axios");
 const RoutePostTickets = express.Router();
-const { validationCatch } = require('../middleware/validationCatch');
+const { validationCatch, userAuthentication } = require('../middleware');
 const { query, body } = require('express-validator');
+const { naverMessage } = require('../utils/naverMessage');
+
 const { ServerCommonError, CustomError } = require('../errors');
 const { Ticket } = require('../model');
+
+const url = 'https://gosrock.link/ticket/';
 RoutePostTickets.post(
   '/tickets',
+  userAuthentication,
   [
-    body('phoneNumber')
-      .matches(/^[0-9]+$/)
-      .withMessage('숫자만 들어와야합니다.')
-      .isLength({ min: 11, max: 11 })
-      .withMessage('전화번호 길이는 11자이어야 합니다.'),
     body('ticketCount')
       .isInt()
       .withMessage('ticketCount 0이상 10이하의 정수로 필요합니다.'),
@@ -24,6 +24,7 @@ RoutePostTickets.post(
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
       const { phoneNumber, ticketCount, accountName } = req.body;
       console.log(phoneNumber, ticketCount, accountName);
+      const caller = process.env.NAVER_CALLER;
 
       if (ticketCount <= 0 || ticketCount > 10) {
         return res.custom400FailMessage('티켓수량오류');
@@ -42,8 +43,21 @@ RoutePostTickets.post(
         });
         listOfTickets.push(ticket);
       }
+      let msgSubject = '고스락 티켓 발급';
+      let content = '고스락 티켓\n';
+      let count = 0;
+      const multiContent = listOfTickets.map(ticket => {
+        return {
+          to: phoneNumber,
+          content: content + ticketCount + '매' + url + `${ticket._id}` + '\n\n'
+        };
+      });
+      // console.log(caller, content, getBytes(content));
+
+      await naverMessage(caller, phoneNumber, content, multiContent);
 
       // 병렬로 티켓 저장
+      //
       await Promise.all(
         listOfTickets.map(async ticket => {
           await ticket.save();
@@ -62,3 +76,6 @@ RoutePostTickets.post(
 );
 
 module.exports = { RoutePostTickets };
+function getBytes(string) {
+  return Buffer.byteLength(string, 'utf8');
+}

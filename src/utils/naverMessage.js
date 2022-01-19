@@ -13,7 +13,7 @@ const { NaverError } = require('../errors');
 const CryptoJS = require('crypto-js');
 const axios = require('axios');
 
-async function naverMessage(caller, receiver, content) {
+async function naverMessage(caller, receiver, content, multiSend) {
   //서명
   const date = Date.now().toString();
   const uri = process.env.NAVER_SERVICE_ID; //서비스 ID
@@ -36,6 +36,8 @@ async function naverMessage(caller, receiver, content) {
   const signature = hash.toString(CryptoJS.enc.Base64);
 
   //문자 송신 요청
+  const messages = multiSend ? multiSend : [{ to: `${receiver}` }];
+  console.log(messages);
   try {
     await axios({
       method: method,
@@ -52,10 +54,11 @@ async function naverMessage(caller, receiver, content) {
         countryCode: '82',
         from: caller, //"발신번호기입",
         content: content, //문자내용 기입,
-        messages: [{ to: `${receiver}` }]
+        messages: messages
       }
     });
   } catch (err) {
+    console.log(err.response);
     throw new NaverError(err, err.response.status);
   }
 }

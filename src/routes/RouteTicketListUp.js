@@ -13,11 +13,16 @@ RouteTicketListUp.get(
   '/admin/tickets',
   AdminAuthentication,
   [
-    query('page').isInt().withMessage('숫자만 들어와야합니다.'),
+    query('page')
+      .exists()
+      .withMessage('page넘버를 입력해주세요')
+      .isInt()
+      .withMessage('숫자만 입력해야 합니다'),
     query('searchType')
       .exists()
+      .withMessage('검색타입을 입력해주세요')
       .isIn(['', 'accountName', 'phoneNumber'])
-      .withMessage('검색 타입을 입력해주세요'),
+      .withMessage('입력 가능 검색 타입은 ``, accountName, phoneNumber입니다.'),
     query('searchString').custom(value => {
       if (value === '' || value !== '') {
         return true;
@@ -31,19 +36,23 @@ RouteTicketListUp.get(
       const countPage = parseInt(page);
       const offset = (countPage - 1) * 3;
       const limit = 3;
+
       if (offset < 0) {
-        return res.custom400FailMessage('페이지를 넘버 오류');
+        return res.custom400FailMessage('페이지 넘버는 0보다 커야 합니다.');
       }
       let resultObject = {};
       console.log(`${countPage}번 페이지`);
 
       if (!searchType.length) {
+        if (search.length > 0) {
+          return res.custom400FailMessage('검색타입을 확인하세요');
+        }
         const [totalCount, ticketList] = await Promise.all([
           Ticket.countDocuments(),
           Ticket.find().limit(limit).skip(offset).sort({ ticketNumber: 1 })
         ]);
         if (Math.ceil(totalCount / limit) < countPage) {
-          return res.custom400FailMessage('페이지 넘버 오류');
+          return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
         }
         resultObject = {
           totalResultCount: totalCount,
@@ -63,7 +72,7 @@ RouteTicketListUp.get(
             .sort({ ticketNumber: 1 })
         ]);
         if (Math.ceil(totalCount / limit) < countPage) {
-          return res.custom400FailMessage('페이지 넘버 오류');
+          return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
         }
         resultObject = {
           totalResultCount: totalCount,
@@ -83,7 +92,7 @@ RouteTicketListUp.get(
             .sort({ ticketNumber: 1 })
         ]);
         if (Math.ceil(totalCount / limit) < countPage) {
-          return res.custom400FailMessage('페이지 넘버 오류');
+          return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
         }
         resultObject = {
           totalResultCount: totalCount,

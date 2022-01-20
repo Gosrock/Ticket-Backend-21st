@@ -10,7 +10,8 @@ const {
   RouteAdminRegister,
   RouteTicketListUp,
   RoutePostAdminTickets,
-  RouteSendMessage
+  RouteSendMessage,
+  RouteAdminEnter
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger, naverMessage } = require('./middleware');
@@ -63,6 +64,7 @@ const server = async () => {
     app.use(RouteAdminRegister);
     app.use(RouteSendMessage);
     app.use(RouteTicketListUp);
+    app.use(RouteAdminEnter);
     app.use(RoutePostAdminTickets);
 
     app.use(errorLoger);

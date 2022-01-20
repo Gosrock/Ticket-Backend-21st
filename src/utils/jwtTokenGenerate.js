@@ -37,7 +37,7 @@ const adminAccessTokenGenerate = ({ userId, name, _id }) => {
     },
     process.env.JWT_KEY_ADMIN_ACCESS,
     {
-      expiresIn: '1h'
+      expiresIn: '24h'
     }
   );
   return adminUserAccessJwt;

@@ -4,7 +4,7 @@ const RoutePostTickets = express.Router();
 const { validationCatch, userAuthentication } = require('../middleware');
 const { query, body } = require('express-validator');
 const { naverMessage } = require('../utils/naverMessage');
-
+const moment = require('moment');
 const { ServerCommonError, CustomError } = require('../errors');
 const { Ticket } = require('../model');
 
@@ -43,16 +43,22 @@ RoutePostTickets.post(
         });
         listOfTickets.push(ticket);
       }
-      let msgSubject = '고스락 티켓 발급';
-      let content = '고스락 티켓\n';
+      let content = '고스락 티켓 ';
       let count = 0;
+
       const multiContent = listOfTickets.map(ticket => {
+        count++;
         return {
           to: phoneNumber,
-          content: content + ticketCount + '매' + url + `${ticket._id}` + '\n\n'
+          content:
+            content +
+            ticketCount +
+            `매\n(${count}/${ticketCount})\n` +
+            url +
+            `${ticket._id}`
         };
       });
-      // console.log(caller, content, getBytes(content));
+      // console.log(caller, content, getBytes(multiContent[0].content));
 
       await naverMessage(caller, phoneNumber, content, multiContent);
 

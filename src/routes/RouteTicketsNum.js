@@ -15,7 +15,7 @@ RouteTicketsNum.get(
         status: { $in: ['confirm-deposit', 'enter'] }
       }).countDocuments();
       console.log(ticketCount);
-      return res.custom200SuccessData({ticketCount : ticketCount});
+      return res.custom200SuccessData({ ticketCount: ticketCount });
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);

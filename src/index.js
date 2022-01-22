@@ -9,6 +9,8 @@ const {
   RouteAdminlogin,
   RouteAdminRegister,
   RouteTicketListUp,
+  RouteTicketsNum,
+  RouteOneTicket,
   RoutePostAdminTickets,
   RouteSendMessage,
   RouteAdminEnter
@@ -57,6 +59,7 @@ const server = async () => {
 
     app.use(express.json());
 
+    app.use(RouteOneTicket);
     app.use(TestRouter);
     app.use(RoutePostTickets);
     app.use(RouteGetTickets);
@@ -64,6 +67,7 @@ const server = async () => {
     app.use(RouteAdminRegister);
     app.use(RouteSendMessage);
     app.use(RouteTicketListUp);
+    app.use(RouteTicketsNum);
     app.use(RouteAdminEnter);
     app.use(RoutePostAdminTickets);
 

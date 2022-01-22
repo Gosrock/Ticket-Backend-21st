@@ -8,7 +8,9 @@ const {
   RouteGetTickets,
   RouteAdminlogin,
   RouteAdminRegister,
-  RouteTicketListUp
+  RouteTicketListUp,
+  RouteAdminTicketsStatus,
+  RouteAdminTicketsInfo
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
@@ -53,6 +55,8 @@ const server = async () => {
     app.use(RouteAdminlogin);
     app.use(RouteAdminRegister);
     app.use(RouteTicketListUp);
+    app.use(RouteAdminTicketsStatus);
+    app.use(RouteAdminTicketsInfo);
 
     app.use(errorLoger);
     app.use(errorHandler);

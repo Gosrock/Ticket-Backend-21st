@@ -11,9 +11,8 @@ RouteAdminTicketsStatus.patch(
     body('status')
       .isString()
       .withMessage('Status 필요합니다.')
-      .isIn[
-        ('confirm-deposit', 'pending-deposit', 'enter', 'non-deposit')
-      ].withMessage('Status 필요합니다.'),
+      .isIn(['confirm-deposit', 'pending-deposit', 'enter', 'non-deposit'])
+      .withMessage('Status 필요합니다.'),
     param('id').isMongoId().withMessage('몽고아이디 형식이여야 합니다.')
   ],
   validationCatch,

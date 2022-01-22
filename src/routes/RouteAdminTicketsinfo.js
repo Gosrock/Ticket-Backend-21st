@@ -8,9 +8,10 @@ const { Ticket } = require('../model');
 RouteAdminTicketsInfo.get(
   '/admin/tickets/info',
   [
-    query('status').isString().withMessage('Status 필요합니다.').isIn[
-      ('confirm-deposit', 'pending-deposit', 'enter', 'non-deposit')
-    ]
+    query('status')
+      .isString()
+      .withMessage('Status 필요합니다.')
+      .isIn([('confirm-deposit', 'pending-deposit', 'enter', 'non-deposit')])
   ],
   validationCatch,
   async (req, res, next) => {

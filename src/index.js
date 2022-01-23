@@ -9,14 +9,11 @@ const {
   RouteAdminlogin,
   RouteAdminRegister,
   RouteTicketListUp,
-  RouteTicketsNum,
-  RouteOneTicket,
-  RoutePostAdminTickets,
-  RouteSendMessage,
-  RouteAdminEnter
+  RouteAdminTicketsStatus,
+  RouteAdminTicketsInfo
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
-const { errorHandler, errorLoger, naverMessage } = require('./middleware');
+const { errorHandler, errorLoger } = require('./middleware');
 const dotenv = require('dotenv');
 //커스텀 리스폰스 설정
 app.response = Object.create(customResponse);
@@ -31,9 +28,6 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
-      NAVER_SERVICE_ID,
-      NAVER_SECRET_KEY,
-      NAVER_CALLER,
       NODE_ENV
     } = process.env;
     console.log(NODE_ENV);
@@ -43,13 +37,9 @@ const server = async () => {
       !MONGO_URI ||
       !JWT_KEY_ADMIN_ACCESS ||
       !JWT_KEY_MESSAGE ||
-      !JWT_KEY_FRONT_ACCESS ||
-      !NAVER_SERVICE_ID ||
-      !NAVER_SECRET_KEY ||
-      !NAVER_CALLER
+      !JWT_KEY_FRONT_ACCESS
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
-
     await mongoose.connect(MONGO_URI, {});
     // debug mode
     app.use(cors());
@@ -59,21 +49,17 @@ const server = async () => {
 
     app.use(express.json());
 
-    app.use(RouteOneTicket);
     app.use(TestRouter);
     app.use(RoutePostTickets);
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);
     app.use(RouteAdminRegister);
-    app.use(RouteSendMessage);
     app.use(RouteTicketListUp);
-    app.use(RouteTicketsNum);
-    app.use(RouteAdminEnter);
-    app.use(RoutePostAdminTickets);
+    app.use(RouteAdminTicketsStatus);
+    app.use(RouteAdminTicketsInfo);
 
     app.use(errorLoger);
     app.use(errorHandler);
-
     app.listen(PORT, async () => {
       console.log('server on.');
     });
@@ -81,4 +67,5 @@ const server = async () => {
     console.log(err);
   }
 };
+
 server();

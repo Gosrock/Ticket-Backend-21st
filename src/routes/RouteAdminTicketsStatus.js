@@ -8,7 +8,7 @@ const { AdminAuthentication } = require('../middleware');
 
 RouteAdminTicketsStatus.patch(
   '/admin/tickets/:_id',
-  //AdminAuthentication,
+  AdminAuthentication,
   [
     body('status')
       .isString()

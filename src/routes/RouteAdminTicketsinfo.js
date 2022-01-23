@@ -8,7 +8,7 @@ const { AdminAuthentication } = require('../middleware');
 
 RouteAdminTicketsInfo.get(
   '/admin/tickets/info',
-  //AdminAuthentication,
+  AdminAuthentication,
   [],
   validationCatch,
   async (req, res, next) => {

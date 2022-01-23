@@ -3,14 +3,9 @@ const jwt = require('jsonwebtoken');
 const accessTokenGenerate = user => {
   const userAccessJwt = jwt.sign(
     {
-      _id: user._id,
-      userId: user.userId,
-      keyword: user.keyword,
-      nickname: user.nickname,
-      profile_url: user.profile_url,
-      status: user.status
+      phoneNumber: user.phoneNumber
     },
-    process.env.JWT_KEY_MESSAGE,
+    process.env.JWT_KEY_FRONT_ACCESS,
     {
       expiresIn: '24h'
     }
@@ -42,14 +37,32 @@ const adminAccessTokenGenerate = ({ userId, name, _id }) => {
     },
     process.env.JWT_KEY_ADMIN_ACCESS,
     {
-      expiresIn: '1h'
+      expiresIn: '24h'
     }
   );
   return adminUserAccessJwt;
 };
 
+const authenticationMessageTokenGenerate = ({
+  phoneNumber,
+  authenticationNumber
+}) => {
+  const authenticationMessageJwt = jwt.sign(
+    {
+      phoneNumber: phoneNumber,
+      authenticationNumber: authenticationNumber
+    },
+    process.env.JWT_KEY_MESSAGE,
+    {
+      expiresIn: '3m'
+    }
+  );
+  return authenticationMessageJwt;
+};
+
 module.exports = {
   accessTokenGenerate,
   refreshTokenGenerate,
-  adminAccessTokenGenerate
+  adminAccessTokenGenerate,
+  authenticationMessageTokenGenerate
 };

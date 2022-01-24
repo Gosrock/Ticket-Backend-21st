@@ -34,8 +34,8 @@ RouteTicketListUp.get(
     try {
       const { page, searchType, searchString: search } = req.query;
       const countPage = parseInt(page);
-      const offset = (countPage - 1) * 3;
-      const limit = 3;
+      const offset = (countPage - 1) * 15;
+      const limit = 15;
 
       if (offset < 0) {
         return res.custom400FailMessage('페이지 넘버는 0보다 커야 합니다.');

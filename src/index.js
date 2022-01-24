@@ -2,7 +2,20 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { TestRouter } = require('./routes');
+const {
+  RoutePostTickets,
+  RouteGetTickets,
+  RouteAdminlogin,
+  RouteAdminRegister,
+  RouteTicketListUp,
+  RouteAdminTicketsStatus,
+  RouteAdminTicketsInfo,
+  RouteTicketsNum,
+  RouteOneTicket,
+  RoutePostAdminTickets,
+  RouteSendMessage,
+  RouteAdminEnter
+} = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
 const dotenv = require('dotenv');
@@ -30,7 +43,7 @@ const server = async () => {
       !JWT_KEY_MESSAGE ||
       !JWT_KEY_FRONT_ACCESS
     )
-      throw new Error('환경변수가 제대로 설정되지 않음 ..');
+      throw new Error('환경변수가 제대로 설정되지 않음');
     await mongoose.connect(MONGO_URI, {});
     // debug mode
     app.use(cors());
@@ -40,7 +53,18 @@ const server = async () => {
 
     app.use(express.json());
 
-    app.use(TestRouter);
+    app.use(RoutePostTickets);
+    app.use(RouteGetTickets);
+    app.use(RouteAdminlogin);
+    app.use(RouteAdminRegister);
+    app.use(RouteTicketListUp);
+    app.use(RouteAdminTicketsStatus);
+    app.use(RouteAdminTicketsInfo);
+    app.use(RouteTicketsNum);
+    app.use(RouteOneTicket);
+    app.use(RoutePostAdminTickets);
+    app.use(RouteSendMessage);
+    app.use(RouteAdminEnter);
 
     app.use(errorLoger);
     app.use(errorHandler);

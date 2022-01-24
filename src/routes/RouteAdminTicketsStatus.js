@@ -44,4 +44,5 @@ RouteAdminTicketsStatus.patch(
     }
   }
 );
+
 module.exports = { RouteAdminTicketsStatus };

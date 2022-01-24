@@ -12,9 +12,11 @@ RouteAdminTicketsStatus.patch(
   [
     body('status')
       .isString()
-      .withMessage('Status 필요합니다.')
+      .withMessage('문자열 형식이어야합니다.')
       .isIn(['confirm-deposit', 'pending-deposit', 'enter', 'non-deposit'])
-      .withMessage('Status 필요합니다.'),
+      .withMessage(
+        'confirm-deposit, pending-deposit, enter, non-deposit 중 하나의 값이 필요합니다. 필요합니다.'
+      ),
     param('_id').isMongoId().withMessage('몽고아이디 형식이여야 합니다.')
   ],
   validationCatch,

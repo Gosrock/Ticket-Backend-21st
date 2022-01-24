@@ -69,7 +69,9 @@ RouteSendMessage.post(
         success: true,
         status: 200,
         data: {
-          messageToken: messageToken
+          messageToken: messageToken,
+          // 테스트 이후 제거 요망
+          authenticationNumber: authenticationNumber
         }
       });
     } catch (err) {

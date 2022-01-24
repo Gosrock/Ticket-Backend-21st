@@ -3,14 +3,18 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const {
-  TestRouter,
   RoutePostTickets,
   RouteGetTickets,
   RouteAdminlogin,
   RouteAdminRegister,
   RouteTicketListUp,
   RouteAdminTicketsStatus,
-  RouteAdminTicketsInfo
+  RouteAdminTicketsInfo,
+  RouteTicketsNum,
+  RouteOneTicket,
+  RoutePostAdminTickets,
+  RouteSendMessage,
+  RouteAdminEnter
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
@@ -49,7 +53,6 @@ const server = async () => {
 
     app.use(express.json());
 
-    app.use(TestRouter);
     app.use(RoutePostTickets);
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);
@@ -57,6 +60,11 @@ const server = async () => {
     app.use(RouteTicketListUp);
     app.use(RouteAdminTicketsStatus);
     app.use(RouteAdminTicketsInfo);
+    app.use(RouteTicketsNum);
+    app.use(RouteOneTicket);
+    app.use(RoutePostAdminTickets);
+    app.use(RouteSendMessage);
+    app.use(RouteAdminEnter);
 
     app.use(errorLoger);
     app.use(errorHandler);

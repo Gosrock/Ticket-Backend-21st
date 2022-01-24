@@ -65,4 +65,5 @@ RouteAdminTicketsInfo.get(
     }
   }
 );
+
 module.exports = { RouteAdminTicketsInfo };

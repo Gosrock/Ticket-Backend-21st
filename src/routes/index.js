@@ -5,6 +5,10 @@ module.exports = {
   ...require('./RouteAdminRegister'),
   ...require('./RouteAdminlogin'),
   ...require('./RouteTicketListUp'),
+  ...require('./RouteAdminTicketsStatus'),
+  ...require('./RouteAdminTicketsInfo'),
+  ...require('./RouteTicketsNum'),
+  ...require('./RouteOneTicket'),
   ...require('./RoutePostAdminTickets'),
   ...require('./RouteSendMessage'),
   ...require('./RouteAdminEnter')

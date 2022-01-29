@@ -127,7 +127,7 @@ RouteSendMessage.post(
           status: 200,
           data: {
             userAccessToken: userAccessToken,
-            phoneNumber: phoneNumber
+            phoneNumber: decodedToken.phoneNumber
           }
         });
       } else {

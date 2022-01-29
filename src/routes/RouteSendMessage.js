@@ -126,7 +126,8 @@ RouteSendMessage.post(
           success: true,
           status: 200,
           data: {
-            userAccessToken: userAccessToken
+            userAccessToken: userAccessToken,
+            phoneNumber: phoneNumber
           }
         });
       } else {

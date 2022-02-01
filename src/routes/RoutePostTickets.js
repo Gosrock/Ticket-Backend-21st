@@ -8,7 +8,7 @@ const moment = require('moment');
 const { ServerCommonError, CustomError } = require('../errors');
 const { Ticket } = require('../model');
 
-const url = 'https://gosrock.link/ticket/';
+const url = 'https://gosrock.link/tickets/';
 RoutePostTickets.post(
   '/tickets',
   userAuthentication,
@@ -16,7 +16,11 @@ RoutePostTickets.post(
     body('ticketCount')
       .isInt()
       .withMessage('ticketCount 0이상 10이하의 정수로 필요합니다.'),
-    body('accountName').isString().withMessage('accountName 숫자로 필요합니다.')
+    body('accountName')
+      .isString()
+      .withMessage('accountName 숫자로 필요합니다.')
+      .isLength({ min: 2, max: 4 })
+      .withMessage('name 길이는 3자이어야 합니다.')
   ],
   validationCatch,
   async (req, res, next) => {

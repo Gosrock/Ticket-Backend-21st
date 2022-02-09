@@ -21,8 +21,10 @@ RouteTicketListUp.get(
     query('searchType')
       .exists()
       .withMessage('검색타입을 입력해주세요')
-      .isIn(['', 'accountName', 'phoneNumber'])
-      .withMessage('입력 가능 검색 타입은 ``, accountName, phoneNumber입니다.'),
+      .isIn(['', 'accountName', 'phoneNumber', 'smallGroup'])
+      .withMessage(
+        '입력 가능 검색 타입은 "", accountName, phoneNumber ,smallGroup("신청" , "미신청")입니다.'
+      ),
     query('searchString').custom(value => {
       if (value === '' || value !== '') {
         return true;
@@ -51,8 +53,15 @@ RouteTicketListUp.get(
           Ticket.countDocuments(),
           Ticket.find().limit(limit).skip(offset).sort({ ticketNumber: 1 })
         ]);
-        if (Math.ceil(totalCount / limit) < countPage) {
+
+        if (totalCount && Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
+        }
+
+        if (!ticketList.length) {
+          // 검색결과 없을시에 리턴임
+          console.log(ticketList);
+          return res.custom200SuccessData([]);
         }
         resultObject = {
           totalResultCount: totalCount,
@@ -71,9 +80,16 @@ RouteTicketListUp.get(
             .skip(offset)
             .sort({ ticketNumber: 1 })
         ]);
-        if (Math.ceil(totalCount / limit) < countPage) {
+
+        if (totalCount && Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
         }
+        if (!ticketList.length) {
+          // 검색결과 없을시에 리턴임
+          console.log(ticketList);
+          return res.custom200SuccessData([]);
+        }
+
         resultObject = {
           totalResultCount: totalCount,
           ticketList: ticketList,
@@ -91,9 +107,51 @@ RouteTicketListUp.get(
             .skip(offset)
             .sort({ ticketNumber: 1 })
         ]);
-        if (Math.ceil(totalCount / limit) < countPage) {
+        if (totalCount && Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
         }
+
+        if (!ticketList.length) {
+          // 검색결과 없을시에 리턴임
+          console.log(ticketList);
+          return res.custom200SuccessData([]);
+        }
+
+        resultObject = {
+          totalResultCount: totalCount,
+          ticketList: ticketList,
+          nextPageNum: countPage >= totalCount / limit ? null : countPage + 1
+        };
+      } else if (searchType === 'smallGroup') {
+        // smallGroup 검색 기능 추가 ( 신청한 인원만 모아볼 수 있음)
+
+        if (!(search === '신청' || search === '미신청')) {
+          return res.custom400FailMessage(
+            '검색 단어가 신청또는 미신청이 아닙니다.'
+          );
+        }
+        const smallGroupState = search === '신청' ? true : false;
+        const [totalCount, ticketList] = await Promise.all([
+          Ticket.countDocuments({
+            smallGroup: smallGroupState
+          }),
+          Ticket.find({
+            smallGroup: smallGroupState
+          })
+            .limit(limit)
+            .skip(offset)
+            .sort({ ticketNumber: 1 })
+        ]);
+        if (totalCount && Math.ceil(totalCount / limit) < countPage) {
+          return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
+        }
+        if (!ticketList.length) {
+          // 검색결과 없을시에 리턴임
+          console.log(ticketList);
+          return res.custom200SuccessData([]);
+        }
+        console.log(totalCount, limit, Math.ceil(totalCount / limit));
+
         resultObject = {
           totalResultCount: totalCount,
           ticketList: ticketList,

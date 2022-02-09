@@ -22,14 +22,14 @@ RouteAdminTicketsStatus.patch(
   validationCatch,
   async (req, res, next) => {
     try {
-      const ticketStatus = req.body.status;
+      const { status: ticketStatus, adminUser } = req.body;
       const id = req.params._id;
       console.log(id);
       // 요청 받은 아이디를 찾아서 그의 status를 요청받은 status로 변경해줘야 함
-
+      console.log('어드민 유ㅜ저', adminUser._id);
       const statusUpdate = await Ticket.findOneAndUpdate(
         { _id: id },
-        { status: ticketStatus },
+        { status: ticketStatus, manager: adminUser._id },
         { new: true }
       );
       console.log(statusUpdate);

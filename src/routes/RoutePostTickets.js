@@ -13,68 +13,69 @@ RoutePostTickets.post(
   '/tickets',
   userAuthentication,
   [
-    body('ticketCount')
-      .isInt()
-      .withMessage('ticketCount 0이상 10이하의 정수로 필요합니다.'),
     body('accountName')
       .isString()
       .withMessage('accountName 숫자로 필요합니다.')
       .isLength({ min: 2, max: 4 })
-      .withMessage('name 길이는 3자이어야 합니다.')
+      .withMessage('name 길이는 3자이어야 합니다.'),
+    body('studentID')
+      .isString()
+      .withMessage('studentID 필요합니다.')
+      .isLength({ min: 7, max: 7 })
+      .withMessage('studentID 길이는 7자이어야 합니다.')
+      .matches(/^C235[0-5][0-9][0-9]|C211[0-2][0-9][0-9]/)
+      .withMessage('신입생 학번이 맞지 않습니다.'),
+    body('smallGroup').isBoolean().withMessage('Boolean 형식이어야 합니다.')
   ],
   validationCatch,
   async (req, res, next) => {
     try {
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
-      const { phoneNumber, ticketCount, accountName } = req.body;
-      console.log(phoneNumber, ticketCount, accountName);
+      const { phoneNumber, accountName, smallGroup, studentID } = req.body;
+      console.log(phoneNumber, accountName);
       const caller = process.env.NAVER_CALLER;
 
-      if (ticketCount <= 0 || ticketCount > 10) {
-        return res.custom400FailMessage('티켓수량오류');
-      }
-
-      let listOfTickets = [];
       // 티켓 전체 수량 세기
-      const allTicketCount = await Ticket.find().countDocuments();
-
-      for (step = 0; step < ticketCount; step++) {
-        // 티켓 서버에서 발급
-        const ticket = new Ticket({
-          ticketNumber: allTicketCount + 1 + step,
-          accountName,
-          phoneNumber
-        });
-        listOfTickets.push(ticket);
+      const [allTicketCount, phoneNumberFindTicket] = await Promise.all([
+        Ticket.find().countDocuments(),
+        Ticket.findOne({ phoneNumber: phoneNumber })
+      ]);
+      if (phoneNumberFindTicket) {
+        // 해당 티켓이 이미 발급된 티켓이면 에러
+        return res.custom400FailMessage('1인 1매 제한입니다.');
       }
-      let content = '고스락 티켓 ';
-      let count = 0;
 
-      const multiContent = listOfTickets.map(ticket => {
-        count++;
-        return {
-          to: phoneNumber,
-          content:
-            content +
-            ticketCount +
-            `매\n(${count}/${ticketCount})\n` +
-            url +
-            `${ticket._id}`
-        };
+      const ticket = new Ticket({
+        ticketNumber: allTicketCount + 1,
+        accountName,
+        phoneNumber,
+        smallGroup,
+        studentID
       });
-      // console.log(caller, content, getBytes(multiContent[0].content));
+      // listOfTickets.push(ticket);
 
-      await naverMessage(caller, phoneNumber, content, multiContent);
+      let content = '고스락 티켓 ';
+
+      // 리스트 형식이어야 함
+      const messageSendContent = [
+        {
+          to: phoneNumber,
+          content: content + url + `${ticket._id}`
+        }
+      ];
+
+      await naverMessage(caller, phoneNumber, content, messageSendContent);
 
       // 병렬로 티켓 저장
-      //
-      await Promise.all(
-        listOfTickets.map(async ticket => {
-          await ticket.save();
-        })
-      );
+      // 기획안 변경으로 티켓 단매로 바뀌었지만 리스트 구조는 그대로 유지
+      // await Promise.all(
+      //   listOfTickets.map(async ticket => {
+      //     await ticket.save();
+      //   })
+      // );
+      await ticket.save();
 
-      return res.custom200SuccessData(listOfTickets);
+      return res.custom200SuccessData([ticket]);
       // return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {

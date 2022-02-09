@@ -10,36 +10,34 @@ RoutePostAdminTickets.post(
   '/admin/tickets',
   AdminAuthentication,
   [
-    body('ticketCount')
-      .exists()
-      .withMessage('티켓 개수를 입력해주세요')
-      .isInt()
-      .withMessage('ticketCount 0이상 10이하의 정수로 필요합니다.')
+    body('accountNameList').isArray().withMessage('배열을 필요로 합니다'),
+    body('accountNameList.*.accountName')
+      .isString()
+      .withMessage('accountName을 가진 도큐멘트를 필요로 합니다')
+      .isLength({ min: 1 })
+      .withMessage('accountName의 길이가 1이상이어야합니다.')
   ],
   validationCatch,
   async (req, res, next) => {
     try {
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
-      const { ticketCount, adminUser } = req.body;
-
-      if (ticketCount <= 0 || ticketCount > 10) {
-        return res.custom400FailMessage('티켓수량오류');
-      }
+      const { accountNameList, adminUser } = req.body;
 
       let listOfTickets = [];
+      let step = 0;
       // 티켓 전체 수량 세기
       const allTicketCount = await Ticket.find().countDocuments();
-      for (step = 0; step < ticketCount; step++) {
-        // 티켓 서버에서 발급
+      accountNameList.map(element => {
         const ticket = new Ticket({
           ticketNumber: allTicketCount + 1 + step,
-          accountName: adminUser.name,
+          accountName: element.accountName,
           adminTicket: true,
           manager: adminUser._id,
           status: 'confirm-deposit'
         });
+        step++;
         listOfTickets.push(ticket);
-      }
+      });
 
       // 병렬로 티켓 저장
       await Promise.all(

@@ -14,7 +14,9 @@ const {
   RouteOneTicket,
   RoutePostAdminTickets,
   RouteSendMessage,
-  RouteAdminEnter
+  RouteAdminEnter,
+  RoutePatchTickets,
+  RouteTicketsAvail
 } = require('./routes');
 const { customResponse } = require('./utils/customResponse');
 const { errorHandler, errorLoger } = require('./middleware');
@@ -52,7 +54,8 @@ const server = async () => {
     // app.disable("etag");
 
     app.use(express.json());
-
+    app.use(RouteTicketsAvail);
+    app.use(RoutePatchTickets);
     app.use(RoutePostTickets);
     app.use(RouteGetTickets);
     app.use(RouteAdminlogin);

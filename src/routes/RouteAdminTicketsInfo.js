@@ -24,16 +24,21 @@ RouteAdminTicketsInfo.get(
         entered,
         notEntered,
         // 소모임 신청 관련 인원수
-        smallGroupSubscription
+        smallGroupSubscription,
+        adminTicketCount
       ] = await Promise.all([
         Ticket.countDocuments(),
         Ticket.countDocuments({
           status: {
             $in: ['confirm-deposit', 'enter']
-          }
+          },
+          // 판매대금이 어드민 티켓을 제외
+          adminTicket: false
         }),
         Ticket.countDocuments({
-          status: { $in: ['confirm-deposit', 'enter'] }
+          status: { $in: ['confirm-deposit', 'enter'] },
+          // 판매대금이 어드민 티켓을 제외
+          adminTicket: false
         }),
         Ticket.countDocuments({
           status: { $in: ['pending-deposit'] }
@@ -49,6 +54,9 @@ RouteAdminTicketsInfo.get(
         }),
         Ticket.countDocuments({
           smallGroup: true
+        }),
+        Ticket.countDocuments({
+          adminTicket: true
         })
       ]);
       resultObject = {
@@ -59,7 +67,9 @@ RouteAdminTicketsInfo.get(
         nonDeposit: nonDeposit,
         entered: entered,
         notEntered: notEntered,
-        smallGroupSubscription
+        smallGroupSubscription,
+        //발행된 어드민 티켓 수 출력
+        adminTicketCount
       };
       return res.custom200SuccessData(resultObject);
     } catch (err) {

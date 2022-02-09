@@ -51,7 +51,15 @@ RouteTicketListUp.get(
         }
         const [totalCount, ticketList] = await Promise.all([
           Ticket.countDocuments(),
-          Ticket.find().limit(limit).skip(offset).sort({ ticketNumber: 1 })
+          Ticket.find()
+            .limit(limit)
+            .skip(offset)
+            .sort({ ticketNumber: 1 })
+            .populate({
+              path: 'manager',
+              model: 'admin',
+              select: { _id: 1, name: 1 }
+            })
         ]);
 
         if (totalCount && Math.ceil(totalCount / limit) < countPage) {
@@ -79,6 +87,11 @@ RouteTicketListUp.get(
             .limit(limit)
             .skip(offset)
             .sort({ ticketNumber: 1 })
+            .populate({
+              path: 'manager',
+              model: 'admin',
+              select: { _id: 1, name: 1 }
+            })
         ]);
 
         if (totalCount && Math.ceil(totalCount / limit) < countPage) {
@@ -106,6 +119,11 @@ RouteTicketListUp.get(
             .limit(limit)
             .skip(offset)
             .sort({ ticketNumber: 1 })
+            .populate({
+              path: 'manager',
+              model: 'admin',
+              select: { _id: 1, name: 1 }
+            })
         ]);
         if (totalCount && Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');
@@ -141,6 +159,11 @@ RouteTicketListUp.get(
             .limit(limit)
             .skip(offset)
             .sort({ ticketNumber: 1 })
+            .populate({
+              path: 'manager',
+              model: 'admin',
+              select: { _id: 1, name: 1 }
+            })
         ]);
         if (totalCount && Math.ceil(totalCount / limit) < countPage) {
           return res.custom400FailMessage('페이지 넘버가 너무 큽니다.');

@@ -22,7 +22,9 @@ RouteAdminTicketsInfo.get(
         pendingDeposit,
         nonDeposit,
         entered,
-        notEntered
+        notEntered,
+        // 소모임 신청 관련 인원수
+        smallGroupSubscription
       ] = await Promise.all([
         Ticket.countDocuments(),
         Ticket.countDocuments({
@@ -44,6 +46,9 @@ RouteAdminTicketsInfo.get(
         }),
         Ticket.countDocuments({
           status: { $in: ['confirm-deposit', 'pending-deposit', 'non-deposit'] }
+        }),
+        Ticket.countDocuments({
+          smallGroup: true
         })
       ]);
       resultObject = {
@@ -53,10 +58,10 @@ RouteAdminTicketsInfo.get(
         pendingDeposit: pendingDeposit,
         nonDeposit: nonDeposit,
         entered: entered,
-        notEntered: notEntered
+        notEntered: notEntered,
+        smallGroupSubscription
       };
       return res.custom200SuccessData(resultObject);
-      // return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {
         return next(err);

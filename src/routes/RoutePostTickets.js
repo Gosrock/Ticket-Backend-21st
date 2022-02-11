@@ -22,9 +22,7 @@ RoutePostTickets.post(
       .isString()
       .withMessage('studentID 필요합니다.')
       .isLength({ min: 7, max: 7 })
-      .withMessage('studentID 길이는 7자이어야 합니다.')
-      .matches(/^C235[0-5][0-9][0-9]|C211[0-2][0-9][0-9]/)
-      .withMessage('신입생 학번이 맞지 않습니다.'),
+      .withMessage('studentID 길이는 7자이어야 합니다.'),
     body('smallGroup').isBoolean().withMessage('Boolean 형식이어야 합니다.')
   ],
   validationCatch,

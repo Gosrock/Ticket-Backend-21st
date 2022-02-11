@@ -45,7 +45,8 @@ RouteTicketListUp.get(
       let resultObject = {};
       console.log(`${countPage}번 페이지`);
 
-      if (!searchType.length) {
+      console.log(searchType.length);
+      if (searchType.length === 0) {
         if (search.length > 0) {
           return res.custom400FailMessage('검색타입을 확인하세요');
         }
@@ -54,7 +55,7 @@ RouteTicketListUp.get(
           Ticket.find()
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -86,7 +87,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -118,7 +119,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -158,7 +159,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',

@@ -1,6 +1,12 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { createServer } = require('http');
+const httpServer = createServer(app);
+module.exports = { httpServer };
+
+const SocketSingleton = require('./sockets');
+
 const cors = require('cors');
 const {
   RoutePostTickets,
@@ -46,8 +52,11 @@ const server = async () => {
       !JWT_KEY_FRONT_ACCESS
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
+
     await mongoose.connect(MONGO_URI, {});
-    // debug mode
+
+    //start socket server
+    SocketSingleton.startSocketServer();
     app.use(cors());
     //DB 를 먼저 연결하고 나서 요청을 받아야 오류가 안남! 굿... 좋네여,..
     // console.log("MongoDB conneted");
@@ -71,9 +80,9 @@ const server = async () => {
 
     app.use(errorLoger);
     app.use(errorHandler);
-    app.listen(PORT, async () => {
-      console.log('server on.');
-    });
+
+    // 소켓 포함 서버
+    httpServer.listen(5000);
   } catch (err) {
     console.log(err);
   }

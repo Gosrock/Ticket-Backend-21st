@@ -45,8 +45,7 @@ RouteTicketListUp.get(
       let resultObject = {};
       console.log(`${countPage}번 페이지`);
 
-      console.log(searchType.length);
-      if (searchType.length === 0) {
+      if (!searchType.length) {
         if (search.length > 0) {
           return res.custom400FailMessage('검색타입을 확인하세요');
         }

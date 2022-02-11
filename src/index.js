@@ -25,7 +25,7 @@ const dotenv = require('dotenv');
 app.response = Object.create(customResponse);
 dotenv.config();
 // 포트설정
-const PORT = 3000;
+const PORT = 5000;
 
 const server = async () => {
   try {

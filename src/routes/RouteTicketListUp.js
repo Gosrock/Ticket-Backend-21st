@@ -54,7 +54,7 @@ RouteTicketListUp.get(
           Ticket.find()
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -86,7 +86,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -118,7 +118,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',
@@ -158,7 +158,7 @@ RouteTicketListUp.get(
           })
             .limit(limit)
             .skip(offset)
-            .sort({ ticketNumber: 1 })
+            .sort({ ticketNumber: -1 })
             .populate({
               path: 'manager',
               model: 'admin',

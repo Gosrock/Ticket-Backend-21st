@@ -11,5 +11,7 @@ module.exports = {
   ...require('./RouteOneTicket'),
   ...require('./RoutePostAdminTickets'),
   ...require('./RouteSendMessage'),
-  ...require('./RouteAdminEnter')
+  ...require('./RouteAdminEnter'),
+  ...require('./RoutePatchTickets'),
+  ...require('./RouteTicketsAvail')
 };

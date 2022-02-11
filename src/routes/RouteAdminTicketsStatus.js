@@ -31,7 +31,11 @@ RouteAdminTicketsStatus.patch(
         { _id: id },
         { status: ticketStatus, manager: adminUser._id },
         { new: true }
-      );
+      ).populate({
+        path: 'manager',
+        model: 'admin',
+        select: { _id: 1, name: 1 }
+      });
       console.log(statusUpdate);
       return res.custom200SuccessData(statusUpdate);
       //const updateStatus = await Ticket.findByIdAndUpdate( id, status, {new:true} ).exec();

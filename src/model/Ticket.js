@@ -9,8 +9,8 @@ const TicketSchema = new Schema(
       enum: ['confirm-deposit', 'pending-deposit', 'enter', 'non-deposit']
     },
 
-    // 전화번호 --> 코로나 대응 버젼으로 1인 1매 원칙 유니크 검
-    phoneNumber: { type: String, unique: true },
+    // 전화번호 --> 코로나 대응 버젼으로 1인 1매
+    phoneNumber: { type: String },
 
     // 티켓 연번
     ticketNumber: { type: Number, required: true },

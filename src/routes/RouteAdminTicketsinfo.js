@@ -31,14 +31,10 @@ RouteAdminTicketsInfo.get(
         Ticket.countDocuments({
           status: {
             $in: ['confirm-deposit', 'enter']
-          },
-          // 판매대금이 어드민 티켓을 제외
-          adminTicket: false
+          }
         }),
         Ticket.countDocuments({
-          status: { $in: ['confirm-deposit', 'enter'] },
-          // 판매대금이 어드민 티켓을 제외
-          adminTicket: false
+          status: { $in: ['confirm-deposit', 'enter'] }
         }),
         Ticket.countDocuments({
           status: { $in: ['pending-deposit'] }

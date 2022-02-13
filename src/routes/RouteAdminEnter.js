@@ -52,7 +52,7 @@ RouteAdminEnter.post(
       });
       SocketSingleton.ticketsSocket
         .to(ticketId)
-        .emit('enter', { enterState: true, ticketInfo: ticket });
+        .emit('enter', { enterState: true, ticketInfo: ticketUpdated });
 
       return res.custom200SuccessMessage('성공');
     } catch (err) {

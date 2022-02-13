@@ -12,7 +12,7 @@ class SocketSingleton {
 
       // 브라우저는 어드민 고스락에서만 접근이 가능하게 설정
       cors: {
-        origin: 'https://admin.gosrock.link'
+        origin: ['https://admin.gosrock.link', 'http://localhost:3000']
       }
     });
     this.adminSocket = this.io.of('/socket/admin');

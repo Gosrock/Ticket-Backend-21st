@@ -9,10 +9,10 @@ module.exports = () => {
     //handshake ( 헤더도 있고 인증영역도 있음 여기선 header token받음
     // console.log(socket);
     try {
-      if (!socket.handshake.headers.adminaccesstoken) {
+      if (!socket.handshake.auth.adminAccessToken) {
         throw new AuthenticationError('인증오류', ErrorMessage.TOKEN_NOT_EXIST);
       }
-      const token = socket.handshake.headers.adminaccesstoken;
+      const token = socket.handshake.auth.adminAccessToken;
       const decodedToken = await decodeToken(
         token,
         process.env.JWT_KEY_ADMIN_ACCESS

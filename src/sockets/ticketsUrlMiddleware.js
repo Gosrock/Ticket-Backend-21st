@@ -6,18 +6,18 @@ const { Ticket } = require('../model');
 module.exports = () => {
   SocketSingleton.ticketsSocket.use(async (socket, next) => {
     try {
-      if (!socket.handshake.headers.ticketid) {
+      if (!socket.handshake.auth.ticketId) {
         throw new AuthenticationError('인증오류', 'ticketid 필드가 없습니다.');
       }
-      const ticketid = socket.handshake.headers.ticketid;
+      const ticketId = socket.handshake.auth.ticketId;
       const ticket = await Ticket.findOne({
-        _id: ticketid
+        _id: ticketId
       });
       if (!ticket) {
         throw new AuthenticationError('인증오류', '잘못된 티켓 아이디 입니다.');
       }
       // 접속한 티켓의 정보 삽입.
-      socket.data.ticketid = ticketid;
+      socket.data.ticketId = ticketId;
       next();
     } catch (err) {
       if (err instanceof CustomError) {

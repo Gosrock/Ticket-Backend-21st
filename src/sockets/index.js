@@ -40,10 +40,12 @@ class SocketSingleton {
     this.adminSocket.on('connection', socket => {
       console.log('admin is enter', socket.data);
     });
+
     this.ticketsSocket.on('connection', socket => {
-      console.log('tickets is enter', socket.data.ticketid);
+      console.log('tickets is enter', socket.data.ticketId);
       //룸에 강제삽입
-      socket.join(socket.data.ticketid);
+
+      socket.join(socket.data.ticketId);
     });
 
     this.startCheck = true;

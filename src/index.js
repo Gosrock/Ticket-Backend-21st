@@ -40,16 +40,16 @@ const server = async () => {
       JWT_KEY_ADMIN_ACCESS,
       JWT_KEY_MESSAGE,
       JWT_KEY_FRONT_ACCESS,
-      NODE_ENV
+      GOSROCK_CODE
     } = process.env;
-    console.log(NODE_ENV);
 
     // 코드베이스로 환경변수 있는지 체크
     if (
       !MONGO_URI ||
       !JWT_KEY_ADMIN_ACCESS ||
       !JWT_KEY_MESSAGE ||
-      !JWT_KEY_FRONT_ACCESS
+      !JWT_KEY_FRONT_ACCESS ||
+      !GOSROCK_CODE
     )
       throw new Error('환경변수가 제대로 설정되지 않음');
 
@@ -59,7 +59,7 @@ const server = async () => {
     SocketSingleton.startSocketServer();
     app.use(cors());
     //DB 를 먼저 연결하고 나서 요청을 받아야 오류가 안남! 굿... 좋네여,..
-    // console.log("MongoDB conneted");
+    console.log('MongoDB conneted');
     // app.disable("etag");
 
     app.use(express.json());

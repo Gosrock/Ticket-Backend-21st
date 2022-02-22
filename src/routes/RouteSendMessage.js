@@ -49,11 +49,11 @@ RouteSendMessage.post(
 
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
 
-      // await naverMessage(
-      //   caller,
-      //   phoneNumber,
-      //   `[GOSROCK] 이것은 테스트입니다 인증번호 [${authenticationNumber}]를 입력하세요`
-      // );
+      await naverMessage(
+        caller,
+        phoneNumber,
+        `[GOSROCK] 인증번호 [${authenticationNumber}]를 입력하세요`
+      );
 
       //XXXXX 문자 전송 부분입니다 실제로 사용하기 전까지 주석해제 XXXXX
 
@@ -69,9 +69,7 @@ RouteSendMessage.post(
         success: true,
         status: 200,
         data: {
-          messageToken: messageToken,
-          // 테스트 이후 제거 요망
-          authenticationNumber: authenticationNumber
+          messageToken: messageToken
         }
       });
     } catch (err) {

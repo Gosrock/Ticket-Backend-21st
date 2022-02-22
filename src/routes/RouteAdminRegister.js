@@ -38,7 +38,7 @@ RouteAdminRegister.post(
     try {
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
       const { userId, name, password, gosrockCode } = req.body;
-      if (gosrockCode !== '1234') {
+      if (gosrockCode !== process.env.GOSROCK_CODE) {
         return res.custom400FailMessage('코드오류');
       }
       console.log(userId, name, password);

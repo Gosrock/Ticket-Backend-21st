@@ -31,49 +31,52 @@ RoutePostTickets.post(
       // 추후 phoneNumber 는 accessToken 미들웨어에서 가져올 예정입니다./
       const { phoneNumber, accountName, smallGroup, studentID } = req.body;
       console.log(phoneNumber, accountName);
-      const caller = process.env.NAVER_CALLER;
 
-      // 티켓 전체 수량 세기
-      const [allTicketCount, phoneNumberFindTicket] = await Promise.all([
-        Ticket.find().countDocuments(),
-        Ticket.findOne({ phoneNumber: phoneNumber })
-      ]);
-      if (phoneNumberFindTicket) {
-        // 해당 티켓이 이미 발급된 티켓이면 에러
-        return res.custom400FailMessage('1인 1매 제한입니다.');
-      }
+      return res.custom400FailMessage('예매가 종료되었습니다.');
 
-      const ticket = new Ticket({
-        ticketNumber: allTicketCount + 1,
-        accountName,
-        phoneNumber,
-        smallGroup,
-        studentID
-      });
-      // listOfTickets.push(ticket);
+      // const caller = process.env.NAVER_CALLER;
 
-      let content = '고스락 티켓 ';
+      // // 티켓 전체 수량 세기
+      // const [allTicketCount, phoneNumberFindTicket] = await Promise.all([
+      //   Ticket.find().countDocuments(),
+      //   Ticket.findOne({ phoneNumber: phoneNumber })
+      // ]);
+      // if (phoneNumberFindTicket) {
+      //   // 해당 티켓이 이미 발급된 티켓이면 에러
+      //   return res.custom400FailMessage('1인 1매 제한입니다.');
+      // }
 
-      // 리스트 형식이어야 함
-      const messageSendContent = [
-        {
-          to: phoneNumber,
-          content: content + url + `${ticket._id}`
-        }
-      ];
+      // const ticket = new Ticket({
+      //   ticketNumber: allTicketCount + 1,
+      //   accountName,
+      //   phoneNumber,
+      //   smallGroup,
+      //   studentID
+      // });
+      // // listOfTickets.push(ticket);
 
-      await naverMessage(caller, phoneNumber, content, messageSendContent);
+      // let content = '고스락 티켓 ';
 
-      // 병렬로 티켓 저장
-      // 기획안 변경으로 티켓 단매로 바뀌었지만 리스트 구조는 그대로 유지
-      // await Promise.all(
-      //   listOfTickets.map(async ticket => {
-      //     await ticket.save();
-      //   })
-      // );
-      await ticket.save();
+      // // 리스트 형식이어야 함
+      // const messageSendContent = [
+      //   {
+      //     to: phoneNumber,
+      //     content: content + url + `${ticket._id}`
+      //   }
+      // ];
 
-      return res.custom200SuccessData([ticket]);
+      // await naverMessage(caller, phoneNumber, content, messageSendContent);
+
+      // // 병렬로 티켓 저장
+      // // 기획안 변경으로 티켓 단매로 바뀌었지만 리스트 구조는 그대로 유지
+      // // await Promise.all(
+      // //   listOfTickets.map(async ticket => {
+      // //     await ticket.save();
+      // //   })
+      // // );
+      // await ticket.save();
+
+      // return res.custom200SuccessData([ticket]);
       // return res.json({ success: true, data: { user: '찬진' } });
     } catch (err) {
       if (err instanceof CustomError) {
